@@ -167,24 +167,32 @@ half4 frag(Varyings IN) : SV_Target
 
 <br>
 <br>
+
 ## 프로그렘 설명과 결과
 
-<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/>
-좌상단 버튼을 통해 기능의 on/off와 투시되는 영역에대한 크기와 알파조작이 가능합니다.<br>
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/><br>
+
+좌상단 버튼을 통해 기능의 on/off와 투시되는 영역에대한 크기와 알파조작이 가능합니다.
+<br>
 
 [링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/, "웹에서 실행")<br>
 <br>
 이 프로젝트로 구현한 투시카메라기능은 아래와 같은 강점을 가집니다.<br>
+
 1. 일반 오브젝트를 렌더링 하는데에 쓴 셰이더를 수정하지 않았습니다.<br>
 2. 혼합 마스크 연출을 직관적으로 구현 가능합니다.<br>
 3. Z버퍼를 활용하지 않는 포스트이펙트에 대응이 가능합니다.<br>
 4. 다른 오브젝트들을 추가로 렌더링 하지 않습니다.<br>
+
 <br>
+
 반면 개선이 필요한 점은 아래와 같습니다.<br>
+
 1. 복수 타겟에 대한 투시에 대응이 필요합니다.<br>
    여러개의 투시 시점이 생긴다면, 저장해야할 버퍼와 근경 선별 횟수도 비례해서 늘어날 것입니다.<br>
 2. Z버퍼활용 포스트이펙트 대응이 필요합니다.<br>
    알파로 중첩된 영역에 대한 Z값이 모호해지기 때문에, 디더링 필터를 통해 선택적으로 Z값을 선택 혼합한다면 해결 가능할 것으로 보입니다.<br>
 3. 스크린과 같은 크기의 저장 버퍼에 대한 고민이 필요합니다.<br>
    해상도와 플랫폼에 따라 업스케일링도 고려할 수 있습니다.<br>
+
 <br>
