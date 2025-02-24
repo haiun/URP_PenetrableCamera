@@ -180,11 +180,12 @@ PenetratingMask 레이어를 추가로 렌더링하고, 해당 셰이더를 Pene
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/><br>
 
-좌상단 버튼을 통해 기능의 ON/OFF와 투시되는 영역의 크기 및 알파를 조작할 수 있습니다.<br>
+좌상단 버튼을 통해 기능의 ON/OFF와 슬라이더UI를 통해 투시되는 영역의 크기 및 알파를 조작할 수 있습니다.<br>
 
 [링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/ "웹에서 실행")
 
 <br>
+
 이 프로젝트로 구현한 투시카메라기능은 아래와 같은 강점을 가집니다.<br>
 
 * 일반 오브젝트를 렌더링 하는데에 쓴 셰이더를 수정하지 않았습니다.<br>
