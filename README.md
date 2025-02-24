@@ -17,6 +17,10 @@ URP의 구조 변경으로 다른 버전에서는 정상 동작하지 않을 수
 <br>
 ## 투시할 오브젝트의 선별
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/layer.png?raw=true"/><br>
+레이어를 추가합니다.
+* Penetrable: 투시할 가능성이 있는 오브젝트가 포함된 레이어입니다. 투시 효과가 적용될 오브젝트는 이 레이어에서 Penetrated로 변경될 수 있습니다.
+* Penetrated: 현재 투시 중인 오브젝트가 포함된 레이어입니다. 이 레이어는 투시된 후, 다시 Penetrable로 되돌릴 수 있습니다.
+* PenetratingMask: 투시되지 않은 Penetrable 레이어를 제외한 이미지와 투시된 이미지를 혼합하는 마스킹 레이어입니다.
 
 ```csharp
 public static class LayerMaskDefine
