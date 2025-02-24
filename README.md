@@ -69,8 +69,10 @@ private void FilteringNearbyObject()
 <br>
 ## 근경을 제외한 투시 이미지 렌더링<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer1.png?raw=true"/><br>
-<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-001.png?raw=true"/><br>
+
 *UniversalRenderData*에서 기본 렌더링 시 *Penetrated*레이어를 제외하고 렌더링 합니다.<br>
+
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-001.png?raw=true"/><br>
 <br>
 <br>
 ## 근경을 제외한 투시 이미지 저장<br>
@@ -117,8 +119,10 @@ public override void Execute(ScriptableRenderContext context, ref RenderingData 
 1. *GrabRenderPass*를 추가하는 *GrabRendererFeature*를 정의합니다.<br>
 2. 활성화된 *UniversalRenderData*에 *GrabRendererFeature*를 등록합니다.<br>
    <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer2.png?raw=true"/>
+   부가적으로 여기서 저장용 텍스쳐버퍼의 이름 변경이 가능합니다.
 3. 씬에서 전역 Volume을 적용하고 *GrabRendererFeature*를 등록 후 제어합니다.<br>
    <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/volume.png?raw=true"/>
+   게임 로직에서 RenderFeature에 대한 조작이 필요하다면, Volume을 통해 조작하면 됩니다.
 <br>
 <br>
 
@@ -126,6 +130,7 @@ public override void Execute(ScriptableRenderContext context, ref RenderingData 
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer3.png?raw=true"/><br>
 *GrabRenderPass*이후 제외했던 *Penetrated*레이어 오브젝트를 렌더링해서 투시 전 정상적인 화면를 완성합니다.<br>
+Z버퍼나 스텐실등 다른 버퍼들을 초기화하지 않았기 떄문에 정상적인 렌더링이 완성됩니다.<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-002.png?raw=true"/><br>
 <br>
 <br>
@@ -157,15 +162,17 @@ half4 frag(Varyings IN) : SV_Target
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer4.png?raw=true"/><br>
 *PenetratingMask*레이어를 추가로 렌더링 하도록 지정 한 후<br>
-해당 셰이더를 *PenetratingMask*레이어의 반투명 빌보드에 마스킹텍스쳐와 혼합하여 아래와 같은 이미지를 생성합니다.
+해당 셰이더를 *PenetratingMask*레이어의 반투명 빌보드에 마스킹텍스쳐와 혼합하여 아래와 같은 이미지를 생성합니다.<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-003.png?raw=true"/>
 
 <br>
 <br>
 ## 프로그렘 설명과 결과
+
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/>
 좌상단 버튼을 통해 기능의 on/off와 투시되는 영역에대한 크기와 알파조작이 가능합니다.<br>
-[링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/, "웹에서 실행") <br>
+
+[링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/, "웹에서 실행")<br>
 <br>
 이 프로젝트로 구현한 투시카메라기능은 아래와 같은 강점을 가집니다.<br>
 1. 일반 오브젝트를 렌더링 하는데에 쓴 셰이더를 수정하지 않았습니다.<br>
