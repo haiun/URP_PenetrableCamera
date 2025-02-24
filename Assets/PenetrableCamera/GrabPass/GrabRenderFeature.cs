@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 
 public class GrabRendererFeature : ScriptableRendererFeature
 {
@@ -17,10 +16,7 @@ public class GrabRendererFeature : ScriptableRendererFeature
 
     public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
     {
-        if (renderingData.cameraData.cameraType == CameraType.Game)
-        {
-            renderer.EnqueuePass(_grabRenderPass);
-        }
+        renderer.EnqueuePass(_grabRenderPass);
     }
 
     protected override void Dispose(bool disposing)

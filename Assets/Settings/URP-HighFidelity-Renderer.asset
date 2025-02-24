@@ -97,8 +97,8 @@ MonoBehaviour:
   m_Name: GrabRendererFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  settings:
-    rtName: GrabRenderPass
+  _settings:
+    RTName: _GrabRenderPass0
 --- !u!114 &-3371506231119341409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,8 +112,8 @@ MonoBehaviour:
   m_Name: GrabRendererFeature
   m_EditorClassIdentifier: 
   m_Active: 1
-  settings:
-    rtName: _GrabRenderPass0
+  _settings:
+    RTName: _GrabRenderPass0
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
