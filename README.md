@@ -115,16 +115,49 @@ public override void Execute(ScriptableRenderContext context, ref RenderingData 
 *GrabRenderPass*를 사용하기 위해서는 아래와 같은 작업이 추가로 필요합니다.<br>
 1. *GrabRenderPass*를 추가하는 *GrabRendererFeature*를 정의합니다.<br>
 2. 활성화된 *UniversalRenderData*에 *GrabRendererFeature*를 등록합니다.<br>
+   <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer2.png?raw=true"/>
 3. 씬에서 전역 Volume을 적용하고 *GrabRendererFeature*를 등록 후 제어합니다.<br>
-
-
-
+<br>
+<br>
 ## 근경을 포함한 투시 전 이미지 생성
-
+*GrabRenderPass*이후 제외해썬 *Penetrated*레이어 오브젝트를 렌더링해서 투시 전 정상적인 화면를 완성합니다.
+<br>
+<br>
 
 ## 두 이미지의 혼합
-빌보드로 영역 지정
 
+```hlsl
+Varyings vert(Attributes IN)
+{
+    Varyings OUT;
+    OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
+    OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
+    OUT.screenPos = ComputeScreenPos(OUT.positionHCS);
+    return OUT;
+}
+```
+<br>
+
+```hlsl
+half4 frag(Varyings IN) : SV_Target
+{
+    float alpha = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv).a * _Alpha;
+    half4 color = half4(tex2Dproj(_GrabRenderPass0, IN.screenPos).rgb, alpha);
+    return color;
+}
+```
+<br>
+<br>
 ## 프로그렘 설명과 결과
-장점 : 기본쉐이더 독립성, 혼합마스크 연출, 색상관련 포스트이펙트
-한계 : 서로 다른 깊이에 대한 투시, 스크린버퍼, z-버퍼활용 포스트이펙트
+좌상단 버튼을 통해 기능의 on/off와 투시되는 영역에대한 크기와 알파조작이 가능합니다.<br>
+<br>
+이 프로젝트로 구현한 투시카메라기능은 아래와 같은 강점을 가집니다.<br>
+1. 일반 오브젝트를 렌더링 하는데에 쓴 셰이더를 수정하지 않았습니다.<br>
+2. 혼합 마스크 연출을 직관적으로 구현 가능합니다.<br>
+3. Z-버퍼를 활용하지 않는 포스트이펙트에 대응이 가능합니다.<br>
+<br>
+반면 개선이 필요한 점은 아래와 같습니다.<br>
+1. 서로 다른 깊이에 대한 투시<br>
+2. z-버퍼활용 포스트이펙트<br>
+3. 스크린과 같은 크기의 저장 버퍼<br>
+<br>
