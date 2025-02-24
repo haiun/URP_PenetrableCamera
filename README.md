@@ -176,7 +176,7 @@ PenetratingMask 레이어를 추가로 렌더링하고, 해당 셰이더를 Pene
 <br>
 <br>
 
-## 프로그 설명과 결과
+## 프로그램 설명과 결과
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/><br>
 
