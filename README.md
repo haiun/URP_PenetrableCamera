@@ -5,7 +5,7 @@
 URP의 구조 변경으로 다른 버전에서는 정상 동작하지 않을 수 있습니다.<br>
 [링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/ "웹에서 실행") <br>
 <br>
-<img src="https://raw.githubusercontent.com/haiun/URP_PenetrableCamera/refs/heads/main/ReadMeImage/main.png?row=true"/><br>
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/><br>
 <br>
 <br>
 ## 연구 목표
@@ -176,7 +176,7 @@ PenetratingMask 레이어를 추가로 렌더링하고, 해당 셰이더를 Pene
 <br>
 <br>
 
-## 프로그렘 설명과 결과
+## 프로그 설명과 결과
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/><br>
 
