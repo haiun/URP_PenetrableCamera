@@ -1,6 +1,6 @@
 # URP_PenetrableCamera
 
-이 프로젝트는 URP RenderFeature와 Shader를 활용하여 투시카메라 효과를 구현한 것입니다.<br>
+이 프로젝트는 URP RenderFeature와 셰이더를 활용하여 투시카메라 효과를 구현한 것입니다.<br>
 투시 효과의 범위와 투명도 설정이 가능하며, Unity 2022.3.56f1 버전에서 작업되었습니다.<br>
 URP의 구조 변경으로 다른 버전에서는 정상 동작하지 않을 수 있습니다.<br>
 [링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/ "웹에서 실행") <br>
@@ -152,7 +152,7 @@ Varyings vert(Attributes IN)
 ```
 
 일반적인 오브젝트 렌더링 시, TransformObjectToHClip, ComputeScreenPos 함수로 카메라 이미지 버퍼와 같은 좌표계를 얻습니다.<br>
-그 결과값을 fragment shader로 전달하면 아래와 같이 저장된 버퍼를 자연스럽게 참조할 수 있습니다.<br>
+그 결과값을 fragment 셰이더로 전달하면 아래와 같이 저장된 버퍼를 자연스럽게 참조할 수 있습니다.<br>
 
 ```hlsl
 half4 frag(Varyings IN) : SV_Target
