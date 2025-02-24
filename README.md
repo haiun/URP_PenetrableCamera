@@ -73,7 +73,7 @@ Penetrable과 Penetrated 레이어로 설정된 오브젝트를 SphereCast로 �
 ## 근경을 제외한 투시 이미지 렌더링<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer1.png?raw=true"/><br>
 
-UniversalRenderData에서 기본 렌더링 시 Penetrated 레이어를 제외하고 렌더링합니다.<br>
+UniversalRenderData에서 기본 렌더링 시 Penetrated, PenetratingMask 레이어를 제외하고 렌더링합니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-001.png?raw=true"/><br>
 <br>
@@ -129,6 +129,8 @@ GrabRenderPass를 사용하기 위해서는 아래와 같은 작업이 추가로
 
 ## 근경을 포함한 투시 전 이미지 생성
 
+UniversalRenderData에 기본적으로 추가할 수 있는 Render Objects는 특정 레이어에 포함된 오브젝트를 선택적으로 렌더링합니다.<br>
+
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer3.png?raw=true"/>
 
 GrabRenderPass 이후, 제외한 Penetrated 레이어 오브젝트를 렌더링하여 투시 전 정상적인 화면을 완성합니다.<br>
@@ -152,9 +154,10 @@ Varyings vert(Attributes IN)
 ```
 
 일반적인 오브젝트 렌더링 시, TransformObjectToHClip, ComputeScreenPos 함수로 카메라 이미지 버퍼와 같은 좌표계를 얻습니다.<br>
-그 결과값을 fragment 셰이더로 전달하면 아래와 같이 저장된 버퍼를 자연스럽게 참조할 수 있습니다.<br>
 
 ```hlsl
+sampler2D _GrabRenderPass0;
+//...
 half4 frag(Varyings IN) : SV_Target
 {
     float alpha = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv).a * _Alpha;
@@ -162,6 +165,7 @@ half4 frag(Varyings IN) : SV_Target
     return color;
 }
 ```
+그 결과값을 fragment 셰이더로 전달하면 아래와 같이 저장된 버퍼를 자연스럽게 참조할 수 있습니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer4.png?raw=true"/><br>
 
