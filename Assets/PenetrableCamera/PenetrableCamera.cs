@@ -43,7 +43,12 @@ public class PenetrableCamera : MonoBehaviour
     {
         if (!_penetrableCameraActive)
             return;
-        
+
+        FilteringNearbyObject();
+    }
+
+    private void FilteringNearbyObject()
+    {
         var camPos = transform.position;
         var sphereCastDirection = (_target.position - camPos);
         sphereCastDirection.Normalize();
@@ -67,6 +72,7 @@ public class PenetrableCamera : MonoBehaviour
             penetrableGameObject.SetPenetrated(_hitOnFrame.Contains(penetrableGameObject));
         }
     }
+    
     private void OnGUI()
     {
         if (GUI.Button(_toggleButtonRect, _penetrableCameraActive ? "Penetrable Camera On" : "Penetrable Camera Off"))
