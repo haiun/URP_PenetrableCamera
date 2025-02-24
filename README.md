@@ -204,7 +204,9 @@ PenetratingMask 레이어를 추가로 렌더링하고, 해당 셰이더를 Pene
 
 ## 프로그램 설명과 결과
 
-<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/><br>
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result2.gif?raw=true"/><br>
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result3.gif?raw=true"/><br>
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result4.gif?raw=true"/><br>
 
 좌상단 버튼을 통해 기능의 ON/OFF와 슬라이더UI를 통해 투시되는 영역의 크기 및 알파를 조작할 수 있습니다.<br>
 
