@@ -67,13 +67,14 @@ private void FilteringNearbyObject()
 표현목표에 따라 근경/중경/원경이 바뀌지 않는다면, *근경*만 *Penetrated*레이어로 설정해서 선별 로직의 비용을 줄일 수 있습니다.<br>
 <br>
 <br>
-## 근경을 제외한 투시 이미지 렌더링
+## 근경을 제외한 투시 이미지 렌더링<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer1.png?raw=true"/><br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-001.png?raw=true"/><br>
 *UniversalRenderData*에서 기본 렌더링 시 *Penetrated*레이어를 제외하고 렌더링 합니다.<br>
 <br>
 <br>
-## 근경을 제외한 투시 이미지 저장
+## 근경을 제외한 투시 이미지 저장<br>
+
 화면에 표시되고 있는 이미지를 저장하는 *GrabRenderPass*를 ScriptableRenderPass를 상속받아 구현합니다.<br>
 ```csharp
 // GrabRenderPass.cs
@@ -117,10 +118,15 @@ public override void Execute(ScriptableRenderContext context, ref RenderingData 
 2. 활성화된 *UniversalRenderData*에 *GrabRendererFeature*를 등록합니다.<br>
    <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer2.png?raw=true"/>
 3. 씬에서 전역 Volume을 적용하고 *GrabRendererFeature*를 등록 후 제어합니다.<br>
+   <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/volume.png?raw=true"/>
 <br>
 <br>
+
 ## 근경을 포함한 투시 전 이미지 생성
-*GrabRenderPass*이후 제외해썬 *Penetrated*레이어 오브젝트를 렌더링해서 투시 전 정상적인 화면를 완성합니다.
+
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer3.png?raw=true"/><br>
+*GrabRenderPass*이후 제외했던 *Penetrated*레이어 오브젝트를 렌더링해서 투시 전 정상적인 화면를 완성합니다.<br>
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-002.png?raw=true"/><br>
 <br>
 <br>
 
@@ -136,7 +142,9 @@ Varyings vert(Attributes IN)
     return OUT;
 }
 ```
-<br>
+
+일반적인 오브젝트 렌더링 시 정점의Position에 TransformObjectToHClip, ComputeScreenPos함수를 차례대로 계산하면, 카메라 이미지 버퍼와 같은 좌표계가 됩니다.<br>
+계산 결과값을 fragment shader로 전달하면 아래와 같이 저장해둔 버퍼의 자연스러운 참조가 가능합니다.<br>
 
 ```hlsl
 half4 frag(Varyings IN) : SV_Target
@@ -146,18 +154,30 @@ half4 frag(Varyings IN) : SV_Target
     return color;
 }
 ```
+
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer4.png?raw=true"/><br>
+*PenetratingMask*레이어를 추가로 렌더링 하도록 지정 한 후<br>
+해당 셰이더를 *PenetratingMask*레이어의 반투명 빌보드에 마스킹텍스쳐와 혼합하여 아래와 같은 이미지를 생성합니다.
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-003.png?raw=true"/>
+
 <br>
 <br>
 ## 프로그렘 설명과 결과
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/Result1.gif?raw=true"/>
 좌상단 버튼을 통해 기능의 on/off와 투시되는 영역에대한 크기와 알파조작이 가능합니다.<br>
+[링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/, "웹에서 실행") <br>
 <br>
 이 프로젝트로 구현한 투시카메라기능은 아래와 같은 강점을 가집니다.<br>
 1. 일반 오브젝트를 렌더링 하는데에 쓴 셰이더를 수정하지 않았습니다.<br>
 2. 혼합 마스크 연출을 직관적으로 구현 가능합니다.<br>
-3. Z-버퍼를 활용하지 않는 포스트이펙트에 대응이 가능합니다.<br>
+3. Z버퍼를 활용하지 않는 포스트이펙트에 대응이 가능합니다.<br>
+4. 다른 오브젝트들을 추가로 렌더링 하지 않습니다.<br>
 <br>
 반면 개선이 필요한 점은 아래와 같습니다.<br>
-1. 서로 다른 깊이에 대한 투시<br>
-2. z-버퍼활용 포스트이펙트<br>
-3. 스크린과 같은 크기의 저장 버퍼<br>
+1. 복수 타겟에 대한 투시에 대응이 필요합니다.<br>
+   여러개의 투시 시점이 생긴다면, 저장해야할 버퍼와 근경 선별 횟수도 비례해서 늘어날 것입니다.<br>
+2. Z버퍼활용 포스트이펙트 대응이 필요합니다.<br>
+   알파로 중첩된 영역에 대한 Z값이 모호해지기 때문에, 디더링 필터를 통해 선택적으로 Z값을 선택 혼합한다면 해결 가능할 것으로 보입니다.<br>
+3. 스크린과 같은 크기의 저장 버퍼에 대한 고민이 필요합니다.<br>
+   해상도와 플랫폼에 따라 업스케일링도 고려할 수 있습니다.<br>
 <br>
