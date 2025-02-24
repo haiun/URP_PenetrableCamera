@@ -3,7 +3,7 @@
 이 프로젝트는 URP RenderFeature와 Shader를 활용하여 투시카메라 효과를 구현한 것입니다.<br>
 투시 효과의 범위와 투명도 설정이 가능하며, Unity 2022.3.56f1 버전에서 작업되었습니다.<br>
 URP의 구조 변경으로 다른 버전에서는 정상 동작하지 않을 수 있습니다.<br>
-[링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/, "웹에서 실행") <br>
+[링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/ "웹에서 실행") <br>
 <br>
 <img src="https://raw.githubusercontent.com/haiun/URP_PenetrableCamera/refs/heads/main/ReadMeImage/main.png?row=true"/><br>
 <br>
@@ -178,7 +178,7 @@ PenetratingMask 레이어를 추가로 렌더링하고, 해당 셰이더를 Pene
 
 좌상단 버튼을 통해 기능의 ON/OFF와 투시되는 영역의 크기 및 알파를 조작할 수 있습니다.<br>
 
-[링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/, "웹에서 실행")
+[링크 - 웹에서 실행](https://haiun.github.io/URP_PenetrableCamera_TEST/ "웹에서 실행")
 
 <br>
 이 프로젝트로 구현한 투시카메라기능은 아래와 같은 강점을 가집니다.<br>
