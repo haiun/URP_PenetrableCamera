@@ -119,7 +119,31 @@ public override void Execute(ScriptableRenderContext context, ref RenderingData 
 GrabRenderPass가 실행될 때 그려진 이미지를 _GrabRenderPass0 버퍼에 즉시 저장합니다.<br>
 <br>
 GrabRenderPass를 사용하기 위해서는 아래와 같은 작업이 추가로 필요합니다.<br>
-1. GrabRenderPass를 추가하는 GrabRendererFeature를 정의합니다.<br>
+1. ScriptableRendererFeature를 상속받아 GrabRenderPass를 추가하는 GrabRendererFeature를 정의합니다.<br>
+    ```csharp
+    public class GrabRendererFeature : ScriptableRendererFeature
+    {
+        [SerializeField]
+        private GrabSettings _settings;
+        private GrabRenderPass _grabRenderPass;
+    
+        public override void Create()
+        {
+            _grabRenderPass = new GrabRenderPass(_settings);
+            _grabRenderPass.renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
+        }
+    
+        public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
+        {
+            renderer.EnqueuePass(_grabRenderPass);
+        }
+    
+        protected override void Dispose(bool disposing)
+        {
+            _grabRenderPass.Dispose();
+        }
+    }
+    ```
 2. 활성화된 UniversalRenderData에 GrabRendererFeature를 등록합니다.<br>
    <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer2.png?raw=true"/>
    * 부가적으로 텍스처 버퍼 이름을 변경할 수 있습니다.<br>
@@ -155,7 +179,7 @@ Varyings vert(Attributes IN)
 }
 ```
 
-일반적인 오브젝트 렌더링 시, TransformObjectToHClip, ComputeScreenPos 함수로 카메라 이미지 버퍼와 같은 좌표계를 얻습니다.<br>
+일반적인 오브젝트 렌더링 시, TransformObjectToHClip, ComputeScreenPos 함수로 스크린 버퍼와 같은 좌표계를 얻습니다.<br>
 
 ```hlsl
 sampler2D _GrabRenderPass0;
@@ -167,7 +191,7 @@ half4 frag(Varyings IN) : SV_Target
     return color;
 }
 ```
-그 결과값을 fragment 셰이더로 전달하면 아래와 같이 저장된 버퍼를 자연스럽게 참조할 수 있습니다.<br>
+그 결과값을 fragment 셰이더로 전달하면 _GrabRenderPass0를 참조할 수 있습니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer4.png?raw=true"/><br>
 
