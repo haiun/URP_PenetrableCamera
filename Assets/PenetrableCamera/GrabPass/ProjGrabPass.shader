@@ -3,6 +3,7 @@ Shader "Unlit/ProjGrabPass"
     Properties
     {
         [MainTexture] _BaseMap("Base Map", 2D) = "white" {}
+        _Alpha("Alpha", Range(0, 1)) = 0.5
     }
 
     SubShader
@@ -43,6 +44,7 @@ Shader "Unlit/ProjGrabPass"
 
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseMap_ST;
+                float _Alpha;
             CBUFFER_END
 
             Varyings vert(Attributes IN)
@@ -56,7 +58,7 @@ Shader "Unlit/ProjGrabPass"
 
             half4 frag(Varyings IN) : SV_Target
             {
-                float alpha = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv).a;
+                float alpha = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv).a * _Alpha;
                 half4 color = half4(tex2Dproj(_GrabRenderPass0, IN.screenPos).rgb, alpha);
                 return color;
             }

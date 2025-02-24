@@ -6,6 +6,9 @@ public class PenetrableCamera : MonoBehaviour
 {
     [SerializeField]
     private Transform _target;
+    
+    [SerializeField]
+    private Transform _mask;
 
     [SerializeField]
     private float _sphareCastRadius;
@@ -14,16 +17,25 @@ public class PenetrableCamera : MonoBehaviour
     private List<PenetrableGameObject> _penetrableGameObjects;
     
     [SerializeField]
-    private bool _penetrableCameraActive = true;
-
-    [SerializeField]
     private Volume _volume;
     
     [SerializeField]
     private GameObject _penetrableCameraMaskRoot;
     
-    private readonly Rect _toggleButtonRect = new(0, 0, 200, 30);
-
+    [SerializeField]
+    private Material _penetrableCameraMaskMaterial;
+    
+    private bool _penetrableCameraActive = true;
+    private float _maskAlphaSliderValue = 0.5f;
+    private float _maskScaleSliderValue = 4f;
+    private readonly Rect _stateTextAreaRect = new(10, 0, 200, 40);
+    private readonly Rect _toggleButtonRect = new(10, 40, 200, 30);
+    private readonly Rect _alphaSliderTextRect = new(10, 70, 45, 25);
+    private readonly Rect _scaleSliderTextRect = new(10, 100, 45, 25);
+    private readonly Rect _alphaSliderRect = new(60, 75, 140, 30);
+    private readonly Rect _scaleSliderRect = new(60, 105, 140, 30);
+    private readonly int _materialPropertyAlphaId = Shader.PropertyToID("_Alpha");
+    
     private const int HitBufferSize = 32;
     private readonly RaycastHit[] _hitBuffer = new RaycastHit[HitBufferSize];
     private readonly HashSet<PenetrableGameObject> _hitOnFrame = new();
@@ -55,10 +67,9 @@ public class PenetrableCamera : MonoBehaviour
             penetrableGameObject.SetPenetrated(_hitOnFrame.Contains(penetrableGameObject));
         }
     }
-
     private void OnGUI()
     {
-        if (GUI.Button(_toggleButtonRect, "Toggle Penetrable Camera"))
+        if (GUI.Button(_toggleButtonRect, _penetrableCameraActive ? "Penetrable Camera On" : "Penetrable Camera Off"))
         {
             _penetrableCameraActive = !_penetrableCameraActive;
             _penetrableCameraMaskRoot.SetActive(_penetrableCameraActive);
@@ -72,5 +83,15 @@ public class PenetrableCamera : MonoBehaviour
                 }
             }
         }
+
+        GUI.TextArea(_alphaSliderTextRect, "Alpha");
+        _maskAlphaSliderValue = GUI.HorizontalSlider(_alphaSliderRect, _maskAlphaSliderValue, 0.0f, 1.0f);
+        _penetrableCameraMaskMaterial.SetFloat(_materialPropertyAlphaId, _maskAlphaSliderValue);
+        
+        GUI.TextArea(_scaleSliderTextRect, "Scale");
+        _maskScaleSliderValue = GUI.HorizontalSlider(_scaleSliderRect, _maskScaleSliderValue, 0.0f, 4.0f);
+        _mask.localScale = new Vector3(_maskScaleSliderValue, _maskScaleSliderValue, _maskScaleSliderValue);
+        
+        GUI.TextField(_stateTextAreaRect, $"Mask Alpha: {_maskAlphaSliderValue:0.00}\nMask Scale: {_maskScaleSliderValue:0.00}");
     }
 }
