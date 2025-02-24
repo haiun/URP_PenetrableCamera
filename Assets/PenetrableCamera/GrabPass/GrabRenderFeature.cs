@@ -1,16 +1,17 @@
 using System;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 public class GrabRendererFeature : ScriptableRendererFeature
 {
-    [SerializeField] private GrabSettings settings;
+    [SerializeField]
+    private GrabSettings _settings;
     private GrabRenderPass _grabRenderPass;
 
     public override void Create()
     {
-        _grabRenderPass = new GrabRenderPass(settings);
-        
+        _grabRenderPass = new GrabRenderPass(_settings);
         _grabRenderPass.renderPassEvent = RenderPassEvent.AfterRenderingSkybox;
     }
 
@@ -31,5 +32,5 @@ public class GrabRendererFeature : ScriptableRendererFeature
 [Serializable]
 public class GrabSettings
 {
-    public string rtName = "_GrabRenderPass0";
+    public string RTName = "_GrabRenderPass0";
 }
