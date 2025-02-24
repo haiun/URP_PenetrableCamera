@@ -70,7 +70,7 @@ Penetrable과 Penetrated 레이어로 설정된 오브젝트를 SphereCast로 �
 근경/중경/원경이 바뀌지 않는다면, 근경만 Penetrated 레이어로 설정하여 선별 로직의 비용을 줄일 수 있습니다.<br>
 <br>
 <br>
-## 근경을 제외한 투시 이미지 렌더링<br>
+## 근경을 제외한 이미지 렌더링<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer1.png?raw=true"/><br>
 
 UniversalRenderData에서 기본 렌더링 시 Penetrated, PenetratingMask 레이어를 제외하고 렌더링합니다.<br>
@@ -78,7 +78,7 @@ UniversalRenderData에서 기본 렌더링 시 Penetrated, PenetratingMask 레�
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-001.png?raw=true"/><br>
 <br>
 <br>
-## 근경을 제외한 투시 이미지 저장<br>
+## 근경을 제외한 이미지 저장<br>
 
 화면에 표시된 이미지를 저장하기 위해 GrabRenderPass를 ScriptableRenderPass를 상속받아 구현합니다.<br>
 ```csharp
