@@ -88,6 +88,7 @@ UniversalRenderData에서 기본 렌더링 시 장애물인 Penetrated와, 이�
 
 <br>
 <br>
+
 ## 장애물을 제외한 이미지 저장<br>
 
 화면에 표시된 이미지를 저장하기 위해 GrabRenderPass를 ScriptableRenderPass를 상속받아 구현합니다.<br>
@@ -178,6 +179,10 @@ Z 버퍼를 포함한 다른 버퍼를 초기화하지 않기 때문에 자연�
 
 ## 두 이미지의 혼합
 
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/billboard.png?raw=true"/>
+
+마지막으로 두 이미지를 혼합하기 위해 타겟에 적당한 크기의 빌보드를 배치합니다.<br>
+
 ```hlsl
 Varyings vert(Attributes IN)
 {
@@ -206,6 +211,7 @@ half4 frag(Varyings IN) : SV_Target
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer4.png?raw=true"/><br>
 
 PenetratingMask 레이어를 추가로 렌더링하고, 해당 셰이더를 PenetratingMask 레이어의 반투명 빌보드에 마스킹 텍스처와 혼합하여 최종 이미지를 생성합니다.<br>
+이때 Depth Test를 Always를 설정해서 빌보드의 모든 영역이 항상 렌더링되도록 지정합니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-003.png?raw=true"/>
 
