@@ -9,18 +9,22 @@ URP의 구조 변경으로 다른 버전에서는 정상 동작하지 않을 수
 <br>
 <br>
 ## 연구 목표
-이 프로젝트는 "Cult of the Lamb - 컬트 오브 더 램"에서 사용된 투시카메라를 모방한 것입니다.<br>
-플레이 중인 캐릭터를 가리는 오브젝트들의 투명도를 설정하여 캐릭터를 표시하고, 이를 통해 근경을 표현합니다.<br>
+이 프로젝트는 "Cult of the Lamb - 컬트 오브 더 램"에서 사용된 스타일의 투시카메라를 모방한 것입니다.<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/target.gif?raw=true"/><br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/target_ex.png?raw=true"/><br>
+
+플레이 중인 캐릭터를 가리는 오브젝트들의 투명도를 설정하여 캐릭터를 표시하고, 이를 통해 근경을 표현합니다.<br>
+카메라와 타겟 사이의 오브젝트를 선별하고, 장애물이 없는 이미지와 혼합하여 투시카메라 효과를 구현합니다.<br>
+
+<img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/milestone.png?raw=true"/><br>
 <br>
 <br>
 
-## 투시할 오브젝트의 선별
+## 장애물의 선별
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/layer.png?raw=true"/><br>
 레이어를 추가합니다.
-* Penetrable: 투시할 가능성이 있는 오브젝트가 포함된 레이어입니다. 투시 효과가 적용될 오브젝트는 이 레이어에서 Penetrated로 변경될 수 있습니다.
+* Penetrable: 장애물이 될 가능성이 있는 오브젝트가 포함된 레이어입니다. 투시 효과가 적용될 오브젝트는 이 레이어에서 Penetrated로 변경될 수 있습니다.
 * Penetrated: 현재 투시 중인 오브젝트가 포함된 레이어입니다. 이 레이어는 투시된 후, 다시 Penetrable로 되돌릴 수 있습니다.
 * PenetratingMask: 투시되지 않은 Penetrable 레이어를 제외한 이미지와 투시된 이미지를 혼합하는 마스킹 레이어입니다.
 
@@ -38,6 +42,8 @@ public static class LayerMaskDefine
 }
 ```
 Physics와 Render Feature에서 오브젝트의 분류를 위해 레이어를 설정합니다.<br>
+PenetrableLayerMask는 Physics로 선별할 레이어들을 정의합니다.
+그리고 장애물이라면 PenetratedLayer를 장애물이 아니면 PenetrableLayer로 각 오브젝트의 레이어를 변경합니다.
 <br>
 
 ```csharp
@@ -67,20 +73,22 @@ private void FilteringNearbyObject()
     }
 }
 ```
-이 프로젝트는 카메라와 타겟이 모두 움직이기 때문에, SphereCast를 통해 근경인지 여부를 판단합니다.<br>
-Penetrable과 Penetrated 레이어로 설정된 오브젝트를 SphereCast로 확인하고, 근경이라면 Penetrated로, 아니면 Penetrable로 레이어를 변경합니다.<br>
-근경/중경/원경이 바뀌지 않는다면, 근경만 Penetrated 레이어로 설정하여 선별 로직의 비용을 줄일 수 있습니다.<br>
+이 프로젝트는 카메라와 타겟이 모두 움직이기 때문에, SphereCast를 통해 장애물 여부를 판단합니다.<br>
+장애물이 바뀌지 않는다면, 선별 로직의 비용을 줄일 수 있습니다.<br>
 <br>
 <br>
-## 근경을 제외한 이미지 렌더링<br>
+## 장애물을 제외한 이미지 렌더링<br>
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer1.png?raw=true"/><br>
 
-UniversalRenderData에서 기본 렌더링 시 Penetrated, PenetratingMask 레이어를 제외하고 렌더링합니다.<br>
+UniversalRenderData에서 기본 렌더링 시 장애물인 Penetrated와, 이미지 혼합 시 사용할 PenetratingMask 레이어를 제외하고 렌더링합니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-001.png?raw=true"/><br>
+
+장애물이 제외된 이미지를 얻을 수 있습니다.<br>
+
 <br>
 <br>
-## 근경을 제외한 이미지 저장<br>
+## 장애물을 제외한 이미지 저장<br>
 
 화면에 표시된 이미지를 저장하기 위해 GrabRenderPass를 ScriptableRenderPass를 상속받아 구현합니다.<br>
 ```csharp
@@ -97,7 +105,7 @@ public override void Configure(CommandBuffer cmd, RenderTextureDescriptor camera
     cmd.SetGlobalTexture(_defaultSettings.RTName, _grabTextureHandle);
 }
 ```
-화면 크기와 동일한 저장용 텍스처 버퍼를 생성하고, 다른 셰이더에서 사용할 이름을 부여합니다. 기본값은 _GrabRenderPass0을 사용합니다.<br>
+화면 크기와 동일한 저장용 텍스처 버퍼를 생성하고, 다른 셰이더에서 사용할 이름을 부여합니다. 이름은 임의로 _GrabRenderPass0로 정했습니다.<br>
 ```csharp
 // GrabRenderPass.cs
 public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
@@ -144,6 +152,7 @@ GrabRenderPass를 사용하기 위해서는 아래와 같은 작업이 추가로
         }
     }
     ```
+    * GrabRendererFeature가 컴파일되면, RendererFeature관련 매뉴에서 사용 가능해집니다.
 2. 활성화된 UniversalRenderData에 GrabRendererFeature를 등록합니다.<br>
    <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer2.png?raw=true"/>
    * 부가적으로 텍스처 버퍼 이름을 변경할 수 있습니다.<br>
@@ -153,16 +162,17 @@ GrabRenderPass를 사용하기 위해서는 아래와 같은 작업이 추가로
 <br>
 <br>
 
-## 근경을 포함한 투시 전 이미지 생성
+## 장애물을 포함한 투시 전 이미지 생성
 
 UniversalRenderData에 기본적으로 추가할 수 있는 Render Objects는 특정 레이어에 포함된 오브젝트를 선택적으로 렌더링합니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer3.png?raw=true"/>
 
-GrabRenderPass 이후, 제외한 Penetrated 레이어 오브젝트를 렌더링하여 투시 전 정상적인 화면을 완성합니다.<br>
-Z 버퍼나 스텐실 버퍼를 초기화하지 않기 때문에 정상적으로 렌더링됩니다.<br>
+GrabRenderPass 이후, 제외한 Penetrated 레이어 오브젝트를 렌더링하여 투시 전 완성된 화면을 완성합니다.<br>
+Z 버퍼를 포함한 다른 버퍼를 초기화하지 않기 때문에 자연스럽게 렌더링됩니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-002.png?raw=true"/><br>
+
 <br>
 <br>
 
@@ -226,7 +236,7 @@ PenetratingMask 레이어를 추가로 렌더링하고, 해당 셰이더를 Pene
 반면 개선이 필요한 점은 아래와 같습니다.<br>
 
 * 복수 타겟에 대한 투시에 대응이 필요합니다.<br>
-   * 여러개의 투시 시점이 생긴다면, 저장해야할 버퍼와 근경 선별 횟수도 비례해서 늘어날 것입니다.<br>
+   * 여러개의 투시 시점이 생긴다면, 저장해야할 버퍼와 장애물의 선별 횟수도 비례해서 늘어날 것입니다.<br>
 * Z버퍼활용 포스트이펙트 대응이 필요합니다.<br>
    * 알파로 중첩된 영역에 대한 Z값이 모호해지기 때문에, 디더링 필터를 통해 선택적으로 Z값을 선택 혼합한다면 개선 가능할 것으로 보입니다.<br>
 * 스크린과 같은 크기의 저장 버퍼에 대한 고민이 필요합니다.<br>
