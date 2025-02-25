@@ -168,8 +168,8 @@ UniversalRenderData에 기본적으로 추가할 수 있는 Render Objects는 �
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/renderer3.png?raw=true"/>
 
-GrabRenderPass 이후, 제외한 Penetrated 레이어 오브젝트를 렌더링하여 투시 전 정상적인 화면을 완성합니다.<br>
-Z 버퍼나 스텐실 버퍼를 초기화하지 않기 때문에 정상적으로 렌더링됩니다.<br>
+GrabRenderPass 이후, 제외한 Penetrated 레이어 오브젝트를 렌더링하여 투시 전 완성된 화면을 완성합니다.<br>
+Z 버퍼를 포함한 다른 버퍼를 초기화하지 않기 때문에 자연스럽게 렌더링됩니다.<br>
 
 <img src="https://github.com/haiun/URP_PenetrableCamera/blob/main/ReadMeImage/K-002.png?raw=true"/><br>
 
